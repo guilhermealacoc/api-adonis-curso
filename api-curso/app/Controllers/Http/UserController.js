@@ -8,6 +8,10 @@ class UserController {
     async show () {
         return { result: 'buscou o usuário 1'}
     }
+
+    async update () {
+        return { result: 'Atualizando o usuário 1'}
+    }
 }
 
 module.exports = UserController

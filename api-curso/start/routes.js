@@ -20,9 +20,13 @@ Route.get('/', () => {
   return { status: 'online' }
 })
 
-Route.get('/users', 'UserController.index')
-Route.get('/users/:id', 'UserController.show')
-Route.post('/users/:id', 'UserController.show')
-Route.put('/users/:id', 'UserController.show')
-Route.delete('/users/:id', 'UserController.show')
+Route.resource('users', 'UserController').apiOnly().validator(new Map([
+  [['users.store'], ['User']], [['users.update'], ['User']]
+]))
+
+Route.resource('clients', 'UserController').apiOnly()
+Route.resource('exercises', 'UserController').apiOnly()
+Route.resource('trainings', 'UserController').apiOnly()
+
+
 
