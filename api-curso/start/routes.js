@@ -17,7 +17,12 @@
 const Route = use('Route')
 
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
+  return { status: 'online' }
 })
 
-Route.get('/users', 'UserController.test')
+Route.get('/users', 'UserController.index')
+Route.get('/users/:id', 'UserController.show')
+Route.post('/users/:id', 'UserController.show')
+Route.put('/users/:id', 'UserController.show')
+Route.delete('/users/:id', 'UserController.show')
+

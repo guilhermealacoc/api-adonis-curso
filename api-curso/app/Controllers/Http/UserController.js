@@ -1,8 +1,12 @@
 'use strict'
 
 class UserController {
-    async test(){
-        return { result: 'Isso foi um teste' }
+    async index(){
+        return { result: 'Buscou todos os usuarios' }
+    }
+
+    async show () {
+        return { result: 'buscou o usuário 1'}
     }
 }
 
