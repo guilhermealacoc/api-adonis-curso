@@ -1,16 +1,51 @@
 'use strict'
 
+const User = use('App/models/User')
+
 class UserController {
     async index(){
-        return { result: 'Buscou todos os usuarios' }
+        return await User.all()
     }
 
-    async show () {
-        return { result: 'buscou o usuário 1'}
+    async show ( { params } ) {
+        const user = await User.findOrFail(params.id)
+        return user
     }
 
-    async update () {
-        return { result: 'Atualizando o usuário 1'}
+    async store ( { request } ) {
+        const data = request.only([
+            "name",
+            "username",
+            "email",
+            "password",
+            "type_user_id"
+        ])
+
+        const user = await User.create(data)
+        return user
+    }
+
+    async update ( { params, request }) {
+        const user = await User.findOrFail(params.id)
+        
+        const data = request.only([
+            "name",
+            "username",
+            "email",
+            "password",
+            "type_user_id"
+        ])
+
+        user.merge(data)
+
+        await user.save()
+
+        return user
+    }
+
+    async destroy ( { params } ) {
+        const user = await User.findOrFail(params.id)
+        return await user.delete()
     }
 }
 
