@@ -24,7 +24,7 @@ Route.resource('users', 'UserController').apiOnly().validator(new Map([
   [['users.store'], ['User']], [['users.update'], ['User']]
 ]))
 
-Route.resource('clients', 'UserController').apiOnly()
+Route.resource('clients', 'ClientController').apiOnly()
 Route.resource('exercises', 'UserController').apiOnly()
 Route.resource('trainings', 'UserController').apiOnly()
 
