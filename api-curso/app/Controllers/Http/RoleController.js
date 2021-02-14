@@ -1,61 +1,54 @@
 'use strict'
 
-const Role = use("Role")
+const Role = use('Role')
 
 class RoleController {
-    async index () {
-        return await Role.all()
-    }
-    
-    async show ({params}) {
-        const role = await Role.findOrFail(params.id)
-        await role.load('permissions')
-        return role
-    }
+  async index () {
+    const data = await Role.query().with('permissions').fetch()
+    return data
+  }
 
-    async store ({request}) {
-        const {permissions, ...data} = request.only([
-            "name",
-            "slug",
-            "description",
-            "permissions"
-        ])
+  async show ({ params }) {
+    const role = await Role.findOrFail(params.id)
+    await role.load('permissions')
+    return role
+  }
 
-        const role = await Role.create(data)
+  async store ({ request }) {
+    const { permissions, ...data } = request.only(['name', 'slug', 'description', 'permissions'])
 
-        if(permissions){
-            await role.permissions().attach(permissions)
-        }
+    const role = await Role.create(data)
 
-        await role.load('permissions')
-        return role
-
+    if (permissions) {
+      await role.permissions().attach(permissions)
     }
 
-    async update ({params, request}) {
-        const {permissions, ...data} = request.only([
-            "name",
-            "slug",
-            "description",
-            "permissions"
-        ])
+    await role.load('permissions')
 
-        const role = await Role.findOrFail(params.id)
-        role.merge(data)
-        await role.save()
+    return role
+  }
 
-        if(permissions){
-            await role.permissions().sync(permissions)
-        }
+  async update ({ request, params }) {
+    const { permissions, ...data } = request.only(['name', 'slug', 'description', 'permissions'])
 
-        await role.load('permissions')
-        return role
+    const role = await Role.findOrFail(params.id)
+
+    role.merge(data)
+    await role.save()
+
+    if (permissions) {
+      await role.permissions().sync(permissions)
     }
 
-    async destroy ({params}) {
-        const role = await Role.findOrFail(params.id)
-        return role.delete()
-    }
+    await role.load('permissions')
+    return role
+  }
+
+  async destroy ({ params }) {
+    const role = await Role.findOrFail(params.id)
+    const data = await role.delete()
+    return data
+  }
 }
 
 module.exports = RoleController
