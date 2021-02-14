@@ -1,5 +1,7 @@
 'use strict'
 
+const SessionController = require('../app/Controllers/Http/SessionController')
+
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -20,13 +22,17 @@ Route.get('/', () => {
   return { status: 'online' }
 })
 
+Route.post('/sessions', 'SessionController.create')
+Route.put('/sessions', 'SessionController.refreshToken')
+
 Route.resource('users', 'UserController').apiOnly().validator(new Map([
   [['users.store'], ['User']], [['users.update'], ['User']]
-]))
+])).middleware('auth:jwt')
 
-Route.resource('clients', 'ClientController').apiOnly()
-Route.resource('exercises', 'ExerciseController').apiOnly()
-Route.resource('trainings', 'TrainingController').apiOnly()
+Route.resource('clients', 'ClientController').apiOnly().middleware('auth:jwt')
+Route.resource('exercises', 'ExerciseController').apiOnly().middleware('auth:jwt')
+Route.resource('trainings', 'TrainingController').apiOnly().middleware('auth:jwt')
+
 
 
 
