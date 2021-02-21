@@ -3,7 +3,8 @@ const Exercise = use("App/Models/Exercise")
 
 class ExerciseController {
 
-    async index(){
+    async index({request}){
+        console.log(request.all())
         return await Exercise.all()
     }
 
